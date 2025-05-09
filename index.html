@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bản đồ Trường CĐ Cộng đồng Cà Mau</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Bản đồ Trường CĐ Cộng đồng Cà Mau</h3>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Khởi tạo bản đồ tại CĐ Cộng đồng Cà Mau
+    var map = L.map('map').setView([9.181156, 105.163360], 18);
+
+    // Lớp nền OSM
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Vẽ vòng tròn bán kính 60m (đường kính 120m)
+    var circle = L.circle([9.181156, 105.163360], {
+      color: 'red',               // viền đỏ
+      fillColor: '#a3d2ca',       // nền xanh nhạt
+      fillOpacity: 0.4,
+      radius: 60                  // bán kính 60m
+    }).addTo(map);
+
+    // Marker tại tâm vòng tròn
+    var marker = L.marker([9.181156, 105.163360]).addTo(map);
+    marker.bindPopup("🗿 Tượng đài Cà Mau").openPopup();
+  </script>
+</body>
+</html>
