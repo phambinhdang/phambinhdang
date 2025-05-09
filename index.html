@@ -25,13 +25,16 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Vẽ vòng tròn bán kính 60m (đường kính 120m)
+    // Vẽ vòng tròn bán kính 60m (tức đường kính 120m)
     var circle = L.circle([9.181156, 105.163360], {
       color: 'red',               // viền đỏ
       fillColor: '#a3d2ca',       // nền xanh nhạt
       fillOpacity: 0.4,
       radius: 60                  // bán kính 60m
     }).addTo(map);
+
+    // Gắn popup cho vòng tròn
+    circle.bindPopup("🟢 Vòng tròn 120m quanh tượng đài");
 
     // Marker tại tâm vòng tròn
     var marker = L.marker([9.181156, 105.163360]).addTo(map);
