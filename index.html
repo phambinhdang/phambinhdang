@@ -4,7 +4,10 @@
   <title>Bản đồ Tượng đài Cà Mau - PHAM BINH DANG - CK2202A02</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,43 +16,19 @@
     }
     h2 {
       text-align: center;
-      margin: 20px 0 10px;
+      margin: 20px 0;
     }
     #map {
       height: 500px;
-      margin: 0 10px 10px 10px;
+      margin: 0 10px 20px 10px;
       border: 1px solid #ccc;
-    }
-    #saveBtn {
-      display: block;
-      margin: 0 auto 10px auto;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #saveBtn:hover {
-      background-color: #0056b3;
-    }
-    #positionList {
-      margin: 0 20px 20px 20px;
-      font-size: 14px;
     }
   </style>
 </head>
 <body>
-
-<h2>PHAM BINH DANG -  CK2202A02</h2>
+<h2>PHAM BINH DANG - CK2202A02</h2>
 <h2>Bản đồ Tượng đài Cà Mau</h2>
-<button id="saveBtn">Lưu vị trí đã chọn</button>
 <div id="map"></div>
-<div id="positionList">
-  <strong>Danh sách vị trí đã lưu:</strong>
-  <ul id="savedLocations"></ul>
-</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -70,36 +49,19 @@
     fillOpacity: 0.4
   }).addTo(map);
 
+  // Gắn popup cho vòng tròn
   circle.bindPopup("Vòng tròn đường kính 120m quanh tượng đài");
-  circle.on('mouseover', function () {
+
+  // Hiển thị popup khi rê chuột vào
+  circle.on('mouseover', function (e) {
     this.openPopup();
   });
-  circle.on('mouseout', function () {
+
+  // Ẩn popup khi rời chuột ra
+  circle.on('mouseout', function (e) {
     this.closePopup();
   });
+</script>
 
-  let lastClickedLatLng = null;
-  const savedPositions = [];
-
-  // Khi click vào bản đồ
-  map.on('click', function(e) {
-    lastClickedLatLng = e.latlng;
-    alert(`Vị trí được chọn: ${lastClickedLatLng.lat.toFixed(6)}, ${lastClickedLatLng.lng.toFixed(6)}`);
-  });
-
-  // Khi click vào nút lưu
-  document.getElementById("saveBtn").addEventListener("click", function () {
-    if (lastClickedLatLng) {
-      savedPositions.push(lastClickedLatLng);
-
-      // Hiển thị lên danh sách
-      const ul = document.getElementById("savedLocations");
-      const li = document.createElement("li");
-      li.textContent = `Lat: ${lastClickedLatLng.lat.toFixed(6)}, Lng: ${lastClickedLatLng.lng.toFixed(6)}`;
-      ul.appendChild(li);
-
-      // (Tùy chọn) Thêm marker vào bản đồ
-      L.marker(lastClickedLatLng).addTo(map).bindPopup("Vị trí đã lưu").openPopup();
-
-      // Reset tạm
-      lastClickedLatLng = null;
+</body>
+</html>
