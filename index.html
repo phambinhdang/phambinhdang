@@ -18,7 +18,7 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     // Khởi tạo bản đồ tại CĐ Cộng đồng Cà Mau
-    var map = L.map('map').setView([9.181156, 105.163360], 18);
+    var map = L.map('map').setView([9.176226, 105.150829], 18);
 
     // Lớp nền OSM
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -26,7 +26,7 @@
     }).addTo(map);
 
     // Vẽ vòng tròn bán kính 60m (tức đường kính 120m)
-    var circle = L.circle([9.176226, 105.150829], {
+    var circle = L.circle([9.181156, 105.163360], {
       color: 'red',               // viền đỏ
       fillColor: '#a3d2ca',       // nền xanh nhạt
       fillOpacity: 0.4,
