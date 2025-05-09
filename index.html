@@ -1,44 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Bản đồ tượng đài Cà Mau - PhamBinhDang-CK2202A02</title>
+  <title>Bản đồ Tượng đài Cà Mau - PHAM BINH DANG - CK2202A02</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      text-align: center;
+      margin: 20px 0 10px;
+    }
     #map {
-      height: 600px;
+      height: 500px;
+      margin: 0 10px 10px 10px;
+      border: 1px solid #ccc;
+    }
+    #saveBtn {
+      display: block;
+      margin: 0 auto 10px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #saveBtn:hover {
+      background-color: #0056b3;
+    }
+    #positionList {
+      margin: 0 20px 20px 20px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <h3>Bản đồ tượng đài Cà Mau - PhamBinhDang-CK2202A02</h3>
-  <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    // Khởi tạo bản đồ tại CĐ Cộng đồng Cà Mau
-    var map = L.map('map').setView([9.176226, 105.150829],18);
+<h2>PHAM BINH DANG -  CK2202A02</h2>
+<h2>Bản đồ Tượng đài Cà Mau</h2>
+<button id="saveBtn">Lưu vị trí đã chọn</button>
+<div id="map"></div>
+<div id="positionList">
+  <strong>Danh sách vị trí đã lưu:</strong>
+  <ul id="savedLocations"></ul>
+</div>
 
-    // Lớp nền OSM
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const tuongDaiCaMau = [9.176226, 105.150829];
+  const map = L.map('map').setView(tuongDaiCaMau, 17);
 
-    // Vẽ vòng tròn bán kính 60m (tức đường kính 120m)
-    var circle = L.circle([9.181156, 105.163360], {
-      color: 'red',               // viền đỏ
-      fillColor: '#a3d2ca',       // nền xanh nhạt
-      fillOpacity: 0.4,
-      radius: 60                  // bán kính 60m
-    }).addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
 
-    // Gắn popup cho vòng tròn
-    circle.bindPopup("🟢 Vòng tròn 120m quanh tượng đài");
+  const marker = L.marker(tuongDaiCaMau).addTo(map);
+  marker.bindPopup("Tượng đài Cà Mau").openPopup();
 
-    // Marker tại tâm vòng tròn
-    var marker = L.marker([9.181156, 105.163360]).addTo(map);
-    marker.bindPopup("🗿 Tượng đài Cà Mau").openPopup();
-  </script>
-</body>
-</html>
+  const circle = L.circle(tuongDaiCaMau, {
+    radius: 60,
+    color: 'red',
+    fillColor: 'lightblue',
+    fillOpacity: 0.4
+  }).addTo(map);
+
+  circle.bindPopup("Vòng tròn đường kính 120m quanh tượng đài");
+  circle.on('mouseover', function () {
+    this.openPopup();
+  });
+  circle.on('mouseout', function () {
+    this.closePopup();
+  });
+
+  let lastClickedLatLng = null;
+  const savedPositions = [];
+
+  // Khi click vào bản đồ
+  map.on('click', function(e) {
+    lastClickedLatLng = e.latlng;
+    alert(`Vị trí được chọn: ${lastClickedLatLng.lat.toFixed(6)}, ${lastClickedLatLng.lng.toFixed(6)}`);
+  });
+
+  // Khi click vào nút lưu
+  document.getElementById("saveBtn").addEventListener("click", function () {
+    if (lastClickedLatLng) {
+      savedPositions.push(lastClickedLatLng);
+
+      // Hiển thị lên danh sách
+      const ul = document.getElementById("savedLocations");
+      const li = document.createElement("li");
+      li.textContent = `Lat: ${lastClickedLatLng.lat.toFixed(6)}, Lng: ${lastClickedLatLng.lng.toFixed(6)}`;
+      ul.appendChild(li);
+
+      // (Tùy chọn) Thêm marker vào bản đồ
+      L.marker(lastClickedLatLng).addTo(map).bindPopup("Vị trí đã lưu").openPopup();
+
+      // Reset tạm
+      lastClickedLatLng = null;
